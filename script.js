@@ -1,5 +1,14 @@
 // Global Constants
-const apiKey = "MY_API_KEY"
+const apiKey = "YR5oZedqmvOxn8ougkAnBRvNot7SS2rS";
+const submit_btn = document.querySelector("#search_btn");
+const text_form = document.querySelector("#giphy_query");
+const search_form = document.querySelector("#search-form");
+const limit = 9;
+const rating = "g";
+const lang = "en";
+
+//get request - http://hostname/endpoint?param1=value1&param2=value2
+//    GIPHY - http://api.giphy.com/v1/gifs/search?api_key=MY_API_KEY&q=puppy
 
 /**
  * Update the DOM to display results from the Giphy API query.
@@ -9,7 +18,11 @@ const apiKey = "MY_API_KEY"
  *
  */
 function displayResults(results) {
-  // YOUR CODE HERE
+  console.log(typeof results)
+  results.forEach(result => {
+    document.getElementById("gif_container").innerHTML += `<img src=${result.url}>`;
+  });
+
 }
 
 /**
@@ -20,7 +33,10 @@ function displayResults(results) {
  *
  */
 async function getGiphyApiResults(searchTerm) {
-  // YOUR CODE HERE
+  const url = `http://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchTerm}&limit=${limit}&rating=${rating}&lang=${lang}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  displayResults(data);
 }
 
 /**
@@ -30,10 +46,10 @@ async function getGiphyApiResults(searchTerm) {
  *
  */
 async function handleFormSubmit(event) {
-  // YOUR CODE HERE
+  event.preventDefault();
+  await getGiphyApiResults(text_form.value);
+  text_form.value = "";
 }
-
-// searchForm.addEventListener("submit", handleFormSubmit)
 
 /**
  * Handle fetching the next set of results from the Giphy API
@@ -49,4 +65,5 @@ async function handleShowMore(event) {
 window.onload = function () {
   // YOUR CODE HERE
   // Add any event handlers here
+  search_form.addEventListener("submit", handleFormSubmit);
 }

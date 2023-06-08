@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  background-color: black;
 }
 
 body {
@@ -7,10 +8,48 @@ body {
   font-size: 16px;
   margin: 0;
   padding: 0;
+  text-decoration: none;
 }
 
 h1 {
   text-transform: uppercase;
   text-align: center;
   margin: 20px 0;
+  color: white;
+}
+
+body p {
+  text-align: center;
+  color: white;
+}
+
+#search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#giphy_query {
+  background-color: white;
+  margin: .5rem;
+  padding: .25rem;
+  border: none;
+  border-radius: 2.5px;
+}
+
+#search_btn {
+  background-color: white;
+  margin: .5rem;
+  padding: .25rem;
+  border: none;
+  border-radius: 2.5px;
+}
+
+#gif_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  object-fit: cover;
+  width: 250px;
+  height: 250px;
 }
