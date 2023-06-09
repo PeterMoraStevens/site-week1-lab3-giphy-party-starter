@@ -3,9 +3,11 @@ const apiKey = "YR5oZedqmvOxn8ougkAnBRvNot7SS2rS";
 const submit_btn = document.querySelector("#search_btn");
 const text_form = document.querySelector("#giphy_query");
 const search_form = document.querySelector("#search-form");
+const load_more = document.querySelector("#add-more-btn");
 const limit = 9;
 const rating = "g";
 const lang = "en";
+let offset = 0;
 
 //get request - http://hostname/endpoint?param1=value1&param2=value2
 //    GIPHY - http://api.giphy.com/v1/gifs/search?api_key=MY_API_KEY&q=puppy
@@ -18,11 +20,11 @@ const lang = "en";
  *
  */
 function displayResults(results) {
-  console.log(typeof results)
-  results.forEach(result => {
-    document.getElementById("gif_container").innerHTML += `<img src=${result.url}>`;
+  results.data.forEach((result) => {
+    document.getElementById("gif_container").innerHTML += `
+      <img src=${result.images.original.url}>
+    `;
   });
-
 }
 
 /**
@@ -33,9 +35,10 @@ function displayResults(results) {
  *
  */
 async function getGiphyApiResults(searchTerm) {
-  const url = `http://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchTerm}&limit=${limit}&rating=${rating}&lang=${lang}`;
+  const url = `http://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchTerm}&limit=${limit}&offset=${offset}&rating=${rating}&lang=${lang}`;
   const response = await fetch(url);
   const data = await response.json();
+  offset += 9;
   displayResults(data);
 }
 
@@ -46,9 +49,10 @@ async function getGiphyApiResults(searchTerm) {
  *
  */
 async function handleFormSubmit(event) {
+  offset = 0;
+  document.querySelector("#gif_container").innerHTML = ""
   event.preventDefault();
   await getGiphyApiResults(text_form.value);
-  text_form.value = "";
 }
 
 /**
@@ -59,11 +63,13 @@ async function handleFormSubmit(event) {
  *
  */
 async function handleShowMore(event) {
-  // YOUR CODE HERE
+  event.preventDefault();
+  await getGiphyApiResults(text_form.value);
 }
 
 window.onload = function () {
   // YOUR CODE HERE
   // Add any event handlers here
   search_form.addEventListener("submit", handleFormSubmit);
+  load_more.addEventListener("submit", handleShowMore);
 }
